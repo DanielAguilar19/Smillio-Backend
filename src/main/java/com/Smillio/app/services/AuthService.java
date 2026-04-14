@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.Smillio.app.dtos.LoginRequest;
 import com.Smillio.app.dtos.LoginResponse;
+import com.Smillio.app.dtos.RegistroRequest;
+import com.Smillio.app.entities.Rol;
 import com.Smillio.app.entities.Usuarios;
 import com.Smillio.app.repositories.usuariosRepo;
 
@@ -38,4 +40,20 @@ public class AuthService {
                 usuario.getRol().name()
         );
     }
+
+    public void register(RegistroRequest request) {
+
+    if (usuariosRepo.findByCorreoElectronico(request.getCorreo()).isPresent()) {
+        throw new RuntimeException("Correo ya registrado");
+    }
+
+    Usuarios usuario = new Usuarios();
+
+    usuario.setCorreoElectronico(request.getCorreo());
+    usuario.setHashContrasena(passwordEncoder.encode(request.getPassword()));
+    usuario.setRol(Rol.valueOf(request.getTipo()));
+    usuario.setEstaActivo(true);
+
+    usuariosRepo.save(usuario);
+}
 } 
