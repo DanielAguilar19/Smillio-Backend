@@ -41,19 +41,19 @@ public class AuthService {
         );
     }
 
-    public void register(RegistroRequest request) {
+    public Long register(RegistroRequest request) {
 
-    if (usuariosRepo.findByCorreoElectronico(request.getCorreo()).isPresent()) {
-        throw new RuntimeException("Correo ya registrado");
+        if (usuariosRepo.findByCorreoElectronico(request.getCorreo()).isPresent()) {
+            throw new RuntimeException("Correo ya registrado");
+        }
+
+        Usuarios usuario = new Usuarios();
+        usuario.setCorreoElectronico(request.getCorreo());
+        usuario.setHashContrasena(passwordEncoder.encode(request.getPassword()));
+        usuario.setRol(Rol.valueOf(request.getTipo()));
+        usuario.setEstaActivo(true);
+
+        Usuarios guardado = usuariosRepo.save(usuario);
+        return guardado.getId();
     }
-
-    Usuarios usuario = new Usuarios();
-
-    usuario.setCorreoElectronico(request.getCorreo());
-    usuario.setHashContrasena(passwordEncoder.encode(request.getPassword()));
-    usuario.setRol(Rol.valueOf(request.getTipo()));
-    usuario.setEstaActivo(true);
-
-    usuariosRepo.save(usuario);
-}
 } 
