@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Smillio.app.dtos.LoginRequest;
+import com.Smillio.app.dtos.RegistroRequest;
 import com.Smillio.app.services.AuthService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
+import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin("*")
@@ -30,4 +30,11 @@ public class AuthController {
                     .body(e.getMessage());
         }
     }
+
+
+@PostMapping("/register")
+public ResponseEntity<?> register(@RequestBody RegistroRequest request) {
+    authService.register(request);
+    return ResponseEntity.ok("Usuario creado");
+}
 }
