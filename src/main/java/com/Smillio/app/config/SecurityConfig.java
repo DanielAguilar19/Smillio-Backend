@@ -17,10 +17,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
+            .cors(cors -> {})
+
             .csrf(csrf -> csrf.disable())
-            .formLogin(form -> form.disable())   // 🔥 CLAVE
-            .httpBasic(basic -> basic.disable()) // 🔥 CLAVE
+
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable())
+
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
             );

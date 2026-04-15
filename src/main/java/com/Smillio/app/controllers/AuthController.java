@@ -32,9 +32,13 @@ public class AuthController {
     }
 
 
-@PostMapping("/register")
-public ResponseEntity<?> register(@RequestBody RegistroRequest request) {
-    authService.register(request);
-    return ResponseEntity.ok("Usuario creado");
-}
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegistroRequest request) {
+        try {
+            Long userId = authService.register(request);
+            return ResponseEntity.ok(java.util.Map.of("id", userId, "mensaje", "Usuario creado exitosamente"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
