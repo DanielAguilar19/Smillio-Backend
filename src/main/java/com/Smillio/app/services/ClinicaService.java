@@ -21,6 +21,17 @@ public class ClinicaService {
     @Autowired
     private ServicioRepository servicioRepository;
 
+    public ClinicaResponse getByUsuario(Long usuarioId) {
+        Clinica clinica = clinicaRepository.findByUsuarioId(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Clínica no encontrada para este usuario"));
+        return toResponse(clinica);
+    }
+
+    public List<ClinicaResponse> getAll() {
+        return clinicaRepository.findAll()
+                .stream().map(this::toResponse).collect(Collectors.toList());
+    }
+
     public ClinicaResponse getById(Long id) {
         Clinica clinica = clinicaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Clinica no encontrada con id: " + id));
