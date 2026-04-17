@@ -2,6 +2,8 @@ package com.Smillio.app.dtos;
 
 public class ClinicaRequest {
 
+    private Long usuarioId; // required when admin creates a clinic account
+
     private String nombre;
     private String rtn;
     private String telefono;
@@ -11,6 +13,9 @@ public class ClinicaRequest {
     private String descripcion;
     private String doctorNombre;
     private String doctorEspecialidad;
+
+    public Long getUsuarioId() { return usuarioId; }
+    public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }

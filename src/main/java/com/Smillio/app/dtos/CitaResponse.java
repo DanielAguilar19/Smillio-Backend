@@ -9,6 +9,9 @@ public class CitaResponse {
     private Long pacienteId;
     private String pacienteNombre;
     private Long clinicaId;
+    private String clinicaNombre;
+    private Long odontologoId;
+    private String odontologoNombre;
     private LocalDate fecha;
     private LocalTime hora;
     private String servicio;
@@ -27,6 +30,15 @@ public class CitaResponse {
 
     public Long getClinicaId() { return clinicaId; }
     public void setClinicaId(Long clinicaId) { this.clinicaId = clinicaId; }
+
+    public String getClinicaNombre() { return clinicaNombre; }
+    public void setClinicaNombre(String clinicaNombre) { this.clinicaNombre = clinicaNombre; }
+
+    public Long getOdontologoId() { return odontologoId; }
+    public void setOdontologoId(Long odontologoId) { this.odontologoId = odontologoId; }
+
+    public String getOdontologoNombre() { return odontologoNombre; }
+    public void setOdontologoNombre(String odontologoNombre) { this.odontologoNombre = odontologoNombre; }
 
     public LocalDate getFecha() { return fecha; }
     public void setFecha(LocalDate fecha) { this.fecha = fecha; }

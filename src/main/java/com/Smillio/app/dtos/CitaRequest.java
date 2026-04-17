@@ -7,11 +7,14 @@ import java.time.LocalTime;
 
 public class CitaRequest {
 
-    @NotNull
+    // Enviar pacienteId (Paciente.id) O usuarioId (Usuarios.id) — el servicio resuelve cuál usar
     private Long pacienteId;
+    private Long usuarioId;  // alternativa: el frontend envía el userId del user logueado
 
     @NotNull
     private Long clinicaId;
+
+    private Long odontologoId; // opcional
 
     @NotNull
     private LocalDate fecha;
@@ -27,8 +30,14 @@ public class CitaRequest {
     public Long getPacienteId() { return pacienteId; }
     public void setPacienteId(Long pacienteId) { this.pacienteId = pacienteId; }
 
+    public Long getUsuarioId() { return usuarioId; }
+    public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
+
     public Long getClinicaId() { return clinicaId; }
     public void setClinicaId(Long clinicaId) { this.clinicaId = clinicaId; }
+
+    public Long getOdontologoId() { return odontologoId; }
+    public void setOdontologoId(Long odontologoId) { this.odontologoId = odontologoId; }
 
     public LocalDate getFecha() { return fecha; }
     public void setFecha(LocalDate fecha) { this.fecha = fecha; }

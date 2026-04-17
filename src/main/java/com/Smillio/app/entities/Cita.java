@@ -27,6 +27,10 @@ public class Cita {
     @JoinColumn(name = "clinica_id")
     private Clinica clinica;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "odontologo_id")
+    private Odontologo odontologo;
+
     private LocalDate fecha;
     private LocalTime hora;
     private String servicio;

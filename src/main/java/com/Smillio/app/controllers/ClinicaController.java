@@ -29,6 +29,26 @@ public class ClinicaController {
         }
     }
 
+    // Admin creates a clinic account linked to an existing user
+    @PostMapping
+    public ResponseEntity<?> crearClinica(@RequestBody ClinicaRequest request) {
+        try {
+            return ResponseEntity.ok(clinicaService.crearClinica(request));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Search clinics by specialty (used by patients on the search page)
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ClinicaResponse>> buscarPorEspecialidad(@RequestParam String especialidad) {
+        try {
+            return ResponseEntity.ok(clinicaService.buscarPorEspecialidad(especialidad));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
     @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<?> obtenerPorUsuario(@PathVariable Long usuarioId) {
         try {

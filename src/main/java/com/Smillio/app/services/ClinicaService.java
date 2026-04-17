@@ -4,8 +4,10 @@ import com.Smillio.app.dtos.*;
 import com.Smillio.app.entities.Clinica;
 import com.Smillio.app.entities.HorarioDia;
 import com.Smillio.app.entities.Servicio;
+import com.Smillio.app.entities.Usuarios;
 import com.Smillio.app.repositories.ClinicaRepository;
 import com.Smillio.app.repositories.ServicioRepository;
+import com.Smillio.app.repositories.usuariosRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,39 @@ public class ClinicaService {
 
     @Autowired
     private ServicioRepository servicioRepository;
+
+    @Autowired
+    private usuariosRepo usuariosRepository;
+
+    // ── Admin: create a clinic account linked to an existing Usuarios record ──
+    public ClinicaResponse crearClinica(ClinicaRequest request) {
+        if (request.getUsuarioId() == null) {
+            throw new RuntimeException("usuarioId es requerido para crear una clínica");
+        }
+        Usuarios usuario = usuariosRepository.findById(request.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + request.getUsuarioId()));
+        if (clinicaRepository.findByUsuarioId(request.getUsuarioId()).isPresent()) {
+            throw new RuntimeException("Ya existe una clínica vinculada a este usuario");
+        }
+        Clinica clinica = new Clinica();
+        clinica.setUsuario(usuario);
+        clinica.setNombre(request.getNombre());
+        clinica.setRtn(request.getRtn());
+        clinica.setTelefono(request.getTelefono());
+        clinica.setEmail(request.getEmail());
+        clinica.setDireccion(request.getDireccion());
+        clinica.setWeb(request.getWeb());
+        clinica.setDescripcion(request.getDescripcion());
+        clinica.setDoctorNombre(request.getDoctorNombre());
+        clinica.setDoctorEspecialidad(request.getDoctorEspecialidad());
+        return toResponse(clinicaRepository.save(clinica));
+    }
+
+    // ── Search clinics by specialty ────────────────────────────────────────
+    public List<ClinicaResponse> buscarPorEspecialidad(String especialidad) {
+        return clinicaRepository.findByEspecialidad(especialidad)
+                .stream().map(this::toResponse).collect(Collectors.toList());
+    }
 
     public ClinicaResponse getByUsuario(Long usuarioId) {
         Clinica clinica = clinicaRepository.findByUsuarioId(usuarioId)
