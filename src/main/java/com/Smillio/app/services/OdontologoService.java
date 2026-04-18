@@ -1,5 +1,6 @@
 package com.Smillio.app.services;
 
+import com.Smillio.app.dtos.OdontologoRequest;
 import com.Smillio.app.entities.DocumentoOdontologo;
 import com.Smillio.app.entities.Odontologo;
 import com.Smillio.app.entities.Usuarios;
@@ -28,27 +29,37 @@ public class OdontologoService {
 
     private final String UPLOAD_DIR = "uploads/documentos/odontologos/";
 
-    // Crear nuevo odontólogo
-    public Odontologo registrarOdontologo(Odontologo odontologo) {
-        // Validar que la cédula sea única
-        if (odontologoRepository.findByCedula(odontologo.getCedula()).isPresent()) {
-            throw new RuntimeException("La cédula ya está registrada");
+    // Crear nuevo odontólogo usando DTO (paso 2 del registro)
+    public Odontologo registrarOdontologo(OdontologoRequest request) {
+        if (request.getUsuarioId() == null) {
+            throw new RuntimeException("usuarioId es requerido para registrar un odontólogo");
         }
 
-        // Validar que el usuario exista
-        if (odontologo.getUsuario() == null || odontologo.getUsuario().getId() == null) {
-            throw new RuntimeException("El usuario debe estar registrado primero");
-        }
+        Usuarios usuario = usuariosRepository.findById(request.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + request.getUsuarioId()));
 
         // Validar que no exista otro odontólogo con ese usuario
-        if (odontologoRepository.findByUsuarioId(odontologo.getUsuario().getId()).isPresent()) {
+        if (odontologoRepository.findByUsuarioId(request.getUsuarioId()).isPresent()) {
             throw new RuntimeException("Este usuario ya está registrado como odontólogo");
         }
 
-        odontologo.setEstaActivo(true);
-        if (odontologo.getEstado() == null) {
-            odontologo.setEstado("DESEMPLEADO");
+        // Validar que la cédula sea única
+        if (request.getCedula() != null &&
+                odontologoRepository.findByCedula(request.getCedula()).isPresent()) {
+            throw new RuntimeException("La cédula ya está registrada");
         }
+
+        Odontologo odontologo = new Odontologo();
+        odontologo.setUsuario(usuario);
+        odontologo.setNombre(request.getNombre() != null ? request.getNombre() : "");
+        odontologo.setApellido(request.getApellido());
+        odontologo.setCedula(request.getCedula() != null ? request.getCedula() : "");
+        odontologo.setEspecialidades(request.getEspecialidades());
+        odontologo.setDescripcion(request.getDescripcion());
+        odontologo.setTelefono(request.getTelefono());
+        odontologo.setUbicacion(request.getUbicacion());
+        odontologo.setEstado(request.getEstado() != null ? request.getEstado() : "DESEMPLEADO");
+        odontologo.setEstaActivo(true);
 
         return odontologoRepository.save(odontologo);
     }

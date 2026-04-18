@@ -1,5 +1,6 @@
 package com.Smillio.app.controllers;
 
+import com.Smillio.app.dtos.OdontologoRequest;
 import com.Smillio.app.entities.DocumentoOdontologo;
 import com.Smillio.app.entities.Odontologo;
 import com.Smillio.app.services.OdontologoService;
@@ -21,11 +22,11 @@ public class OdontologoController {
     @Autowired
     private OdontologoService odontologoService;
 
-    // Registrar nuevo odontólogo
+    // Registrar nuevo odontólogo (paso 2: ya existe el usuario, se vincula el perfil)
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrar(@RequestBody Odontologo odontologo) {
+    public ResponseEntity<?> registrar(@RequestBody OdontologoRequest request) {
         try {
-            Odontologo nuevoOdontologo = odontologoService.registrarOdontologo(odontologo);
+            Odontologo nuevoOdontologo = odontologoService.registrarOdontologo(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoOdontologo);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
