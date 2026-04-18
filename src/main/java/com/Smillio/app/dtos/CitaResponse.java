@@ -10,6 +10,7 @@ public class CitaResponse {
     private String pacienteNombre;
     private Long clinicaId;
     private String clinicaNombre;
+    private String clinicaDireccion;
     private Long odontologoId;
     private String odontologoNombre;
     private LocalDate fecha;
@@ -33,6 +34,9 @@ public class CitaResponse {
 
     public String getClinicaNombre() { return clinicaNombre; }
     public void setClinicaNombre(String clinicaNombre) { this.clinicaNombre = clinicaNombre; }
+
+    public String getClinicaDireccion() { return clinicaDireccion; }
+    public void setClinicaDireccion(String clinicaDireccion) { this.clinicaDireccion = clinicaDireccion; }
 
     public Long getOdontologoId() { return odontologoId; }
     public void setOdontologoId(Long odontologoId) { this.odontologoId = odontologoId; }
