@@ -145,6 +145,7 @@ public class CitaService {
         if (c.getClinica() != null) {
             r.setClinicaId(c.getClinica().getId());
             r.setClinicaNombre(c.getClinica().getNombre());
+            r.setClinicaDireccion(c.getClinica().getDireccion());
         }
         if (c.getOdontologo() != null) {
             r.setOdontologoId(c.getOdontologo().getId());
